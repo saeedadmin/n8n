@@ -1,0 +1,41 @@
+name: Keep n8n awake on Koyeb
+
+on:
+  schedule:
+    # هر ۱۵ دقیقه یکبار اجرا می‌شود
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Koyeb service
+        env:
+          PING_URL: ${{ secrets.PING_URL }}
+          PING_METHOD: ${{ secrets.PING_METHOD }}
+          PING_HEADERS: ${{ secrets.PING_HEADERS }}
+        run: |
+          if [ -z "$PING_URL" ]; then
+            echo "PING_URL secret is not set" >&2
+            exit 1
+          fi
+
+          METHOD=${PING_METHOD:-GET}
+          HEADER_ARGS=""
+          if [ -n "$PING_HEADERS" ]; then
+            # خطوط را به آرگومان‌های -H تبدیل می‌کند
+            while IFS= read -r line; do
+              [ -z "$line" ] && continue
+              HEADER_ARGS="$HEADER_ARGS -H \"$line\""
+            done <<'EOF'
+$PING_HEADERS
+EOF
+          fi
+
+          # اجرای curl با پذیرش خطاهای HTTP و اتصال زمان‌دار
+          set -o errexit
+          set -o nounset
+          set -o pipefail
+
+          eval "curl --fail --silent --show-error --max-time 15 --request $METHOD $HEADER_ARGS \"$PING_URL\""
