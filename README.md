@@ -43,7 +43,7 @@
 
 متغیرها در `.env.example` مستند شده‌اند، اما مهم‌ترین‌ها عبارتند از:
 
-- `DB_TYPE`, `DB_POSTGRESDB_HOST`, `DB_POSTGRESDB_PORT`, `DB_POSTGRESDB_DATABASE`, `DB_POSTGRESDB_USER`, `DB_POSTGRESDB_PASSWORD`: اتصال به PostgreSQL خارجی.
+- `DB_TYPE`, `DB_POSTGRESDB_CONNECTION_STRING`: اتصال به PostgreSQL خارجی (مثلاً Neon).
 - `N8N_HOST`, `N8N_PROTOCOL`, `N8N_PORT`, `WEBHOOK_URL`: تنظیمات URL عمومی که Koyeb ارائه می‌دهد.
 - `N8N_ENCRYPTION_KEY`: رمزگذاری Credentialها در پایگاه‌داده.
 - `N8N_BASIC_AUTH_ACTIVE`, `N8N_BASIC_AUTH_USER`, `N8N_BASIC_AUTH_PASSWORD`: محافظت از رابط وب با احراز هویت ساده.
